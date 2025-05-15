@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Admin Panel</title></head>
+<body>
+  <h1>Admin Dashboard</h1>
+  <p>Welcome, <%= session.user.username %> (Admin)</p>
+  <table border="1">
+    <tr><th>Username</th><th>Is Admin?</th></tr>
+    <% users.forEach(user => { %>
+      <tr>
+        <td><%= user.username %></td>
+        <td><%= user.Administrator ? "Yes" : "No" %></td>
+      </tr>
+    <% }) %>
+  </table>
+  <a href="/">Back</a>
+</body>
+</html>
