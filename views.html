@@ -16,3 +16,25 @@
   <a href="/">Back</a>
 </body>
 </html>
+
+
+      <!DOCTYPE html>
+<html>
+<head><title>Profile</title></head>
+<body>
+  <h1>Your Profile</h1>
+  <form action="/auth/profile" method="POST">
+    <label>New Password (optional):</label><br/>
+    <input type="password" name="password" /><br/><br/>
+
+    <label>Address:</label><br/>
+    <input type="text" name="address" /><br/><br/>
+
+    <label>Profile Picture URL:</label><br/>
+    <input type="text" name="profile_picture" /><br/><br/>
+
+    <button type="submit">Update Profile</button>
+  </form>
+  <a href="/">Back</a>
+</body>
+</html>
