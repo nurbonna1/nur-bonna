@@ -60,3 +60,35 @@ router.get('/admin', ensureAdmin, async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+// Show profile
+router.get('/profile', (req, res) => {
+  if (!req.session.user) return res.redirect('/login');
+  res.render('profile', { user: req.session.user });
+});
+
+// Update profile
+router.post('/profile', async (req, res) => {
+  const { password, address, profile_picture } = req.body;
+  const username = req.session.user.username;
+
+  try {
+    const hashedPassword = password ? await bcrypt.hash(password, 10) : null;
+
+    await db.promise().query(
+      `UPDATE Users SET 
+        ${hashedPassword ? 'password = ?,' : ''} 
+        address = ?, 
+        profile_picture = ?
+       WHERE username = ?`,
+      hashedPassword
+        ? [hashedPassword, address, profile_picture, username]
+        : [address, profile_picture, username]
+    );
+
+    res.redirect('/profile');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Error updating profile');
+  }
+});
