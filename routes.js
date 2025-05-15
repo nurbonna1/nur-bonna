@@ -36,3 +36,27 @@ router.post('/register', async (req, res) => {
 });
 
 module.exports = router;
+
+
+function ensureAdmin(req, res, next) {
+  if (req.session.user && req.session.user.isAdmin) {
+    return next();
+  }
+  return res.status(403).send('Access denied. Admins only.');
+}
+
+module.exports = { ensureAdmin };
+
+
+const { ensureAdmin } = require('../middleware/auth');
+
+// Admin Dashboard
+router.get('/admin', ensureAdmin, async (req, res) => {
+  try {
+    const [users] = await db.promise().query('SELECT username, Administrator FROM Users');
+    res.render('admin', { users });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Server error');
+  }
+});
